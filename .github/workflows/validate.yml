@@ -19,7 +19,7 @@ jobs:
           ERRORS=0
           for dir in */; do
             skill="${dir%/}"
-            [[ "$skill" == ".github" || "$skill" == "scripts" ]] && continue
+            [[ "$skill" == ".github" || "$skill" == "scripts" || "$skill" == "docs" ]] && continue
             if [ ! -f "$skill/SKILL.md" ]; then
               echo "❌ SKILL.md manquant : $skill/"
               ERRORS=$((ERRORS + 1))
@@ -48,7 +48,7 @@ jobs:
           echo "## Skills index — $(date '+%Y-%m-%d')"
           for dir in */; do
             skill="${dir%/}"
-            [[ "$skill" == ".github" || "$skill" == "scripts" ]] && continue
+            [[ "$skill" == ".github" || "$skill" == "scripts" || "$skill" == "docs" ]] && continue
             refs=$(find "$skill/references" -name "*.md" 2>/dev/null | wc -l)
             echo "- **$skill** — $refs fichier(s) references/"
           done

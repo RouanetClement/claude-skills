@@ -19,13 +19,10 @@ description: >
 | **Classification** | Catégoriser, trier, labelliser des documents ou sections | `claude-haiku-4-5` |
 | **Résumé simple** | Résumer un document court et factuel | `claude-haiku-4-5` |
 | **Analyse** | Comprendre l'intent, identifier des tensions, des risques, des incohérences | `claude-sonnet-4-6` |
-| **Synthèse multi-docs** | Croiser plusieurs documents, identifier divergences, produire une vue unifiée | `claude-opus-4-6` ¹ |
-| **Q&A complexe** | Répondre à des questions nécessitant un raisonnement approfondi sur le contenu | `claude-opus-4-6` ¹ |
+| **Synthèse multi-docs** | Croiser plusieurs documents, identifier divergences, produire une vue unifiée | `claude-opus-4-6` |
+| **Q&A complexe** | Répondre à des questions nécessitant un raisonnement approfondi sur le contenu | `claude-opus-4-6` |
 
 > Règle de décision rapide : **"trouver et restituer"** → Haiku. **"comprendre et interpréter"** → Sonnet. **"raisonner et trancher"** → Opus.
-
-¹ **opusplan** — `claude-opus-4-6` avec extended thinking activé si disponible.
-  Fallback si indisponible : `claude-opus-4-6` → `claude-sonnet-4-6`.
 
 ---
 

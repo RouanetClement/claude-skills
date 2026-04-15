@@ -27,7 +27,7 @@ Appliquer les overrides trouvés. Sinon, utiliser les valeurs par défaut (voir 
 
 | Phase | Modèle | Raison |
 |---|---|---|
-| Décomposition + modèle de décision | `claude-sonnet-4-6` | Jugement non mécanique requis |
+| Décomposition + modèle de décision | `claude-opus-4-6` | Jugement haute-valeur — erreur de découpage coûteuse |
 | Dispatch tâche mécanique (extraction, CRUD, script) | `claude-haiku-4-5` | Résultat prévisible |
 | Dispatch tâche complexe (architecture, refonte) | `claude-opus-4-6` | Raisonnement poussé |
 | Revue automatique | Agent `task-reviewer` | Contexte frais, jugement isolé |

@@ -28,7 +28,8 @@ Même comportement que session start. Filtres disponibles :
 
 ### P1 — Important (N)
   [TAG] Description
-  ⛔ [TAG] Description  ← needs: [AUTRE-TAG]
+  ⛔ [TAG] Description  ← [AUTRE-TAG] non résolu
+  ⛔ [TAG] Description  ← en attente : "Fournir les credentials AWS"
 
 ### P2 — Sprint suivant (N)
   [TAG] Description
@@ -44,11 +45,14 @@ Si aucune tâche ouverte : afficher `Aucun TODO ouvert.`
 
 ## Règle débloqué / bloqué
 
-Une tâche est **débloquée** si elle n'a pas de clause `needs:`, ou si tous
-les tags listés dans `needs:` sont `[x]` dans le fichier.
+Une tâche est **débloquée** si elle n'a pas de clause `needs:`, ET que tous
+les `[TAG]` internes sont `[x]`, ET qu'aucun prérequis externe (entre guillemets)
+n'est listé.
 
-- Afficher la section **"Débloqués — à traiter"** en premier, toutes priorités mélangées mais triées P0 → P3
-- Dans les sections par priorité, préfixer `⛔` les tâches bloquées et indiquer le tag manquant
+- Afficher la section **"Débloqués — à traiter"** en premier, triée P0 → P3
+- Dans les sections par priorité, préfixer `⛔` les tâches bloquées avec la cause :
+  - `← [TAG] non résolu` pour un prérequis interne
+  - `← en attente : "..."` pour un prérequis externe (action humaine / hors projet)
 - Si aucune tâche débloquée : afficher `Toutes les tâches ouvertes sont bloquées par des prérequis.`
 
 ## Sous-fichiers

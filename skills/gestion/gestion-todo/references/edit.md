@@ -10,25 +10,32 @@ Exemple : `- [ ] Configurer le backup ChromaDB — [BACKUP] P2`
 
 ## Prérequis optionnels (needs:)
 
-Un TODO peut déclarer une dépendance sur la ligne suivante, indentée :
+Deux types de prérequis, combinables sur la même ligne :
 
+**Interne** — autre TODO du projet, identifié par son tag :
 ```
 - [ ] Description — [TAG] Pniveau
   needs: [AUTRE-TAG]
 ```
 
-Plusieurs dépendances sur la même ligne, séparées par une virgule :
-
+**Externe** — action hors du projet (identifiants, décision, accès, arbitrage) :
 ```
 - [ ] Description — [TAG] Pniveau
-  needs: [TAG-A], [TAG-B]
+  needs: "Whitelister l'URL en prod"
+```
+
+Les deux types peuvent coexister :
+```
+- [ ] Description — [TAG] Pniveau
+  needs: [TAG-A], "Fournir les credentials AWS", [TAG-B]
 ```
 
 Règles :
-- **Débloquée** : pas de `needs:`, ou tous les tags référencés sont `[x]`
-- **Bloquée** : au moins un tag `needs:` est encore `[ ]` ou `[~]`
+- **Débloquée** : pas de `needs:`, ET tous les `[TAG]` internes sont `[x]`, ET aucun prérequis externe listé
+- **Bloquée interne** : au moins un `[TAG]` est `[ ]` ou `[~]`
+- **Bloquée externe** : au moins un prérequis entre guillemets (toujours bloquant jusqu'à suppression manuelle)
+- Pour lever un prérequis externe : supprimer l'entrée de la ligne `needs:` une fois résolu
 - Ne jamais ajouter `needs:` à une tâche déjà `[~]` ou `[x]`
-- Lors de l'ajout, vérifier que les tags référencés existent dans le fichier
 
 ## Ajouter un TODO
 

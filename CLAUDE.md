@@ -75,7 +75,29 @@ skill-name/
 
 ## Adding or Modifying Skills
 
-When creating a new skill:
+### Step 0 — Audit des skills publics existants (OBLIGATOIRE)
+
+**Déclencheur** : création initiale d'un skill OU mise à jour majeure (nouveau domaine, refonte du routing, ajout de plusieurs références).
+
+Avant toute conception ou implémentation, effectuer un audit des skills publics traitant du même sujet ou d'un sujet proche. L'objectif est d'identifier les approches existantes et les points couverts par la communauté que la demande initiale aurait omis.
+
+**Sources à consulter :**
+- Anthropic Marketplace (claude.ai/marketplace ou MCP `mcp__claude_ai_Canva` si disponible)
+- GitHub — collections de skills communautaires, notamment :
+  - https://github.com/abubakarsiddik31/claude-skills-collection
+  - Recherche GitHub : `"SKILL.md" <topic>` ou `claude skills <topic>`
+- Autres dépôts publics ou articles de blog recensés lors de la recherche
+
+**Livrable de l'audit** (à présenter à l'utilisateur avant de passer à la conception) :
+
+1. **Tableau des approches constatées** — pour chaque skill trouvé : source, routing choisi (modèles), références principales, particularité notable
+2. **Points majeurs ou edge cases non couverts** — fonctionnalités, cas limites ou patterns traités par des skills existants et absents de la demande initiale de l'utilisateur
+3. **Recommandation** — approche préconisée parmi les options observées, avec justification
+
+L'utilisateur valide (ou amende) cet audit avant que la conception (spec + plan) ne commence.
+
+### Étapes suivantes (après validation de l'audit)
+
 1. Choose the right category: `skills/dev/`, `skills/content/`, or `skills/gestion/`
 2. Create `skills/<category>/<skill-name>/SKILL.md` with YAML frontmatter (`name`, `description`)
 3. Write the router logic: task classification → model choice → reference loading

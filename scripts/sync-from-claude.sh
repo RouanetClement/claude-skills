@@ -42,7 +42,11 @@ for skill_dir in "$SKILLS_SOURCE"/*/; do
     continue
   fi
 
-  rsync -a --delete --exclude='.DS_Store' "$skill_dir" "$REPO_ROOT/$skill_name/"
+  # Copie propre : supprime la destination puis recopie (equivalent rsync --delete)
+  rm -rf "$REPO_ROOT/$skill_name"
+  cp -rp "$skill_dir" "$REPO_ROOT/$skill_name"
+  # Supprimer les .DS_Store eventuels
+  find "$REPO_ROOT/$skill_name" -name '.DS_Store' -delete 2>/dev/null || true
   echo "OK $skill_name"
   SYNCED=$((SYNCED + 1))
 done

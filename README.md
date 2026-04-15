@@ -19,18 +19,21 @@ claude-skills-repo/
 │       ├── gestion-projet/     ← Notion, Slack, tâches, suivi
 │       └── gestion-todo/       ← Lecture, édition, triage, archivage TODO.md
 ├── hooks/
-│   ├── claude/                 ← Hooks Claude Code (PostToolUse, PreToolUse)
-│   │   ├── protect-main.sh     ← Bloque les push directs sur main
-│   │   └── skill-sync-reminder.sh  ← Rappel sync après modif skill
+│   ├── user/                   ← Hooks Claude Code synchronisés vers ~/.claude/hooks/
+│   │   └── protect-main.sh     ← Bloque les push directs sur main (tous projets)
 │   └── git/                    ← Hooks git locaux
 │       └── pre-push            ← Vérifie qu'on ne pousse pas sur main
-├── agents/                     ← Agents Claude (à venir)
+├── agents/
+│   └── task-reviewer/          ← Revue automatique conformité + qualité
+│       └── AGENT.md
 ├── scripts/
-│   ├── sync-to-claude.sh       ← Pousse skills → profil local
+│   ├── sync-to-claude.sh       ← Pousse skills, hooks, agents → ~/.claude/
 │   ├── sync-from-claude.sh     ← Importe skills ← profil local
 │   └── install-hooks.sh        ← Installe les hooks git dans .git/hooks/
 ├── .claude/
-│   └── settings.json           ← Hooks Claude Code (scope projet)
+│   ├── hooks/
+│   │   └── skill-sync-reminder.sh  ← Hook projet uniquement (non synchronisé)
+│   └── settings.json           ← Hooks Claude Code (scope projet uniquement)
 └── .github/
     └── workflows/validate.yml  ← CI : SKILL.md + limite 150 lignes
 ```
@@ -50,11 +53,19 @@ skill-name/
 |---|---|---|---|
 | `dev` | `code-automation` | Sonnet / Haiku | Dev, scripts, debug, IaC, CI/CD |
 | `dev` | `git-workflow` | Haiku / Sonnet | Branches, commits, PRs, revues |
+| `dev` | `skill-builder` | Sonnet | Conception et création de nouveaux skills |
+| `dev` | `orchestration-agents` | Sonnet / Opus | Décomposition et dispatch de tâches en parallèle |
 | `content` | `analyse-documents` | Haiku / Sonnet | Extraction, synthèse, Q&A sur documents |
 | `content` | `recherche-synthese` | Haiku / Sonnet | Veille, recherche web, comparaisons |
 | `content` | `redaction` | Sonnet | Emails, rapports, documentation |
 | `gestion` | `gestion-projet` | Haiku / Sonnet | Notion, Slack, tâches, suivi |
 | `gestion` | `gestion-todo` | Haiku / Sonnet | Lecture, édition, triage, archivage TODO.md |
+
+## Agents disponibles
+
+| Agent | Modèle | Description |
+|---|---|---|
+| `task-reviewer` | Sonnet | Revue automatique conformité plan + qualité code |
 
 ## Règle de routing
 
@@ -78,10 +89,14 @@ git clone <url> && cd claude-skills-repo
 # 2. Installer les hooks git (protection branche main)
 ./scripts/install-hooks.sh
 
-# 3. Synchroniser les skills vers le profil local Claude
-export CLAUDE_SKILLS_PATH=~/.claude/skills
+# 3. Synchroniser skills, hooks et agents vers le profil local Claude
 ./scripts/sync-to-claude.sh
 ```
+
+`sync-to-claude.sh` copie :
+- `skills/**/` → `~/.claude/skills/`
+- `agents/**/AGENT.md` → `~/.claude/agents/<nom>.md`
+- `hooks/user/*.sh` → `~/.claude/hooks/` **et** enregistre automatiquement une entrée `PreToolUse` dans `~/.claude/settings.json`
 
 ## Synchronisation
 

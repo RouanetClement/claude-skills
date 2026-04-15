@@ -19,23 +19,37 @@ Même comportement que session start. Filtres disponibles :
 ```
 ## TODOs ouverts — YYYY-MM-DD
 
+### Débloqués — à traiter (N)
+  P0 [TAG] Description
+  P1 [TAG] Description
+
 ### P0 — Bloquant (N)
-  [TAG] Description de la tâche
+  [TAG] Description
 
 ### P1 — Important (N)
-  [TAG] Description de la tâche
+  [TAG] Description
+  ⛔ [TAG] Description  ← needs: [AUTRE-TAG]
 
 ### P2 — Sprint suivant (N)
-  [TAG] Description de la tâche
+  [TAG] Description
 
 ### P3 — Backlog (N)
-  [TAG] Description de la tâche
+  [TAG] Description
 
 ### Sections archivables
   [TAG] — toutes les tâches [x]
 ```
 
 Si aucune tâche ouverte : afficher `Aucun TODO ouvert.`
+
+## Règle débloqué / bloqué
+
+Une tâche est **débloquée** si elle n'a pas de clause `needs:`, ou si tous
+les tags listés dans `needs:` sont `[x]` dans le fichier.
+
+- Afficher la section **"Débloqués — à traiter"** en premier, toutes priorités mélangées mais triées P0 → P3
+- Dans les sections par priorité, préfixer `⛔` les tâches bloquées et indiquer le tag manquant
+- Si aucune tâche débloquée : afficher `Toutes les tâches ouvertes sont bloquées par des prérequis.`
 
 ## Sous-fichiers
 

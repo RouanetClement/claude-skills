@@ -8,6 +8,28 @@
 
 Exemple : `- [ ] Configurer le backup ChromaDB — [BACKUP] P2`
 
+## Prérequis optionnels (needs:)
+
+Un TODO peut déclarer une dépendance sur la ligne suivante, indentée :
+
+```
+- [ ] Description — [TAG] Pniveau
+  needs: [AUTRE-TAG]
+```
+
+Plusieurs dépendances sur la même ligne, séparées par une virgule :
+
+```
+- [ ] Description — [TAG] Pniveau
+  needs: [TAG-A], [TAG-B]
+```
+
+Règles :
+- **Débloquée** : pas de `needs:`, ou tous les tags référencés sont `[x]`
+- **Bloquée** : au moins un tag `needs:` est encore `[ ]` ou `[~]`
+- Ne jamais ajouter `needs:` à une tâche déjà `[~]` ou `[x]`
+- Lors de l'ajout, vérifier que les tags référencés existent dans le fichier
+
 ## Ajouter un TODO
 
 1. Si section, tag ou priorité manquants → demander avant d'écrire

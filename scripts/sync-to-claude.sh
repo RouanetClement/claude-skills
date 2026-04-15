@@ -120,8 +120,8 @@ else
 const fs   = require('fs');
 const path = require('path');
 
-const settingsFile = process.argv[1];
-const hooksDir     = process.argv[2];
+const settingsFile = process.argv[2];
+const hooksDir     = process.argv[3];
 
 // Lire les settings existants (creer si absent)
 let settings = {};

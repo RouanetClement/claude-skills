@@ -10,18 +10,21 @@ A versioned repository of the Claude user profile — skills, hooks, and agents 
 
 ```
 skills/
-  dev/          → code-automation, git-workflow
+  dev/          → code-automation, git-workflow, skill-builder, orchestration-agents
   content/      → analyse-documents, recherche-synthese, redaction
   gestion/      → gestion-projet, gestion-todo
 
 hooks/
-  claude/       → Claude Code hooks (PostToolUse, PreToolUse) — referenced from .claude/settings.json
+  user/         → Claude Code hooks synced to ~/.claude/hooks/ (all projects)
   git/          → git hooks installed via scripts/install-hooks.sh
 
-agents/         → Claude agents (empty, future use)
+agents/
+  task-reviewer/ → post-implementation review: conformity + quality
 
-scripts/        → sync-to-claude.sh, sync-from-claude.sh, install-hooks.sh
-.claude/        → settings.json (project scope only, no hook files here)
+scripts/        → sync-to-claude.sh (skills+hooks+agents), sync-from-claude.sh, install-hooks.sh
+.claude/
+  hooks/        → project-only Claude Code hooks (never synced to user profile)
+  settings.json → project-scope hooks config
 ```
 
 ## Validation
@@ -108,8 +111,21 @@ When editing references, verify line count stays ≤ 150 (`wc -l references/your
 
 ## Adding or Modifying Hooks
 
-- **Claude Code hooks** (PostToolUse, PreToolUse, etc.) go in `hooks/claude/` and must be referenced in `.claude/settings.json`
-- **Git hooks** go in `hooks/git/` and are installed locally via `./scripts/install-hooks.sh`
+Deux types de hooks coexistent dans ce repo — ne pas les confondre :
+
+| Dossier | Scope | Synchronisation |
+|---|---|---|
+| `hooks/user/` | Utilisateur global — s'applique à **tous** les projets | Copié vers `~/.claude/hooks/` + enregistré dans `~/.claude/settings.json` via `sync-to-claude.sh` |
+| `.claude/hooks/` | Projet uniquement — ne sort jamais de ce repo | Référencé dans `.claude/settings.json` (scope projet) |
+| `hooks/git/` | Hooks git locaux | Installés dans `.git/hooks/` via `./scripts/install-hooks.sh` |
+
+**Règle** : un hook qui référence des chemins ou des conventions propres à ce repo (`./scripts/`, `skills/`, `agents/`) **ne peut pas** être un hook utilisateur — il appartient à `.claude/hooks/`.
+
+### Enregistrement automatique des hooks utilisateur
+
+Lors de l'exécution de `./scripts/sync-to-claude.sh`, chaque fichier `.sh` dans `hooks/user/` est :
+1. Copié dans `~/.claude/hooks/`
+2. Enregistré comme entrée `PreToolUse` (matcher `Bash`) dans `~/.claude/settings.json` via une fusion additive (les entrées existantes ne sont jamais écrasées)
 
 ## Closing a Branch (OBLIGATOIRE avant PR)
 

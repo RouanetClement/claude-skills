@@ -45,3 +45,11 @@ Archives des tâches complétées. Format :
 ### [FIX] Hook skill-sync-reminder — fix Windows backslashes (PR #10)
 
 - [x] Corriger la regex du hook `skill-sync-reminder.sh` : normaliser les backslashes Windows avant le test grep
+
+### [ARCH-GLOBAL-HOOKS] Hooks utilisateur globaux — généralisation (PR #12)
+
+- [x] Déplacer `protect-main.sh` vers `hooks/user/` (synchronisé vers `~/.claude/hooks/`)
+- [x] Déplacer `skill-sync-reminder.sh` vers `.claude/hooks/` (scope projet uniquement)
+- [x] Étendre `sync-to-claude.sh` : copie `hooks/user/*.sh` → `~/.claude/hooks/` + fusion additive `~/.claude/settings.json`
+- [x] Supprimer `hooks/claude/` — remplacé par `hooks/user/` + `.claude/hooks/`
+- [x] Mettre à jour `README.md` et `CLAUDE.md` : documenter distinction hooks utilisateur vs projet

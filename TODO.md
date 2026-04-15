@@ -20,7 +20,7 @@ Une tâche est débloquée si elle n'a pas de `needs:` ou si tous les tags réf�
   needs: [ARCH-REPO-STRUCT]
 - [x] Créer la structure `agents/` et étendre les scripts de sync pour synchroniser vers `~/.claude/agents/` — [ARCH-AGENTS-DIR] P0
   needs: [ARCH-REPO-STRUCT]
-- [ ] Généraliser `protect-main` et `skill-sync-reminder` au niveau utilisateur (`~/.claude/settings.json`) pour couvrir tous les projets — [ARCH-GLOBAL-HOOKS] P0
+- [x] Généraliser `protect-main` et `skill-sync-reminder` au niveau utilisateur (`~/.claude/settings.json`) pour couvrir tous les projets — [ARCH-GLOBAL-HOOKS] P0
   needs: [ARCH-MIGRATE-HOOKS]
 - [x] Mettre à jour la CI pour valider la nouvelle structure (`skills/*/SKILL.md`, `hooks/`, `agents/`) — [ARCH-CI] P1
   needs: [ARCH-MIGRATE-SKILLS]

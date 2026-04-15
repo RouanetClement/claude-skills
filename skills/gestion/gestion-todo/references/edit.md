@@ -30,11 +30,26 @@ Les deux types peuvent coexister :
   needs: [TAG-A], "Fournir les credentials AWS", [TAG-B]
 ```
 
-Règles :
-- **Débloquée** : pas de `needs:`, ET tous les `[TAG]` internes sont `[x]`, ET aucun prérequis externe listé
+### État d'un prérequis
+
+Les `needs:` restent visibles jusqu'à ce que la tâche elle-même soit `[x]`.
+Ils sont marqués résolus au fur et à mesure :
+
+- **Interne résolu** : le tag référencé est passé à `[x]` dans le fichier (état inféré automatiquement)
+- **Externe résolu** : préfixer l'entrée par `[x]` dans la ligne `needs:` une fois l'action réalisée
+
+Exemple d'évolution :
+```
+- [ ] Description — [TAG] Pniveau
+  needs: [x] [TAG-A], [x] "Créer l'espace de déploiement", "Fournir les credentials AWS"
+```
+→ TAG-A résolu, déploiement fait, credentials toujours attendus.
+
+### Règles de blocage
+
+- **Débloquée** : pas de `needs:`, ET tous les `[TAG]` internes sont `[x]`, ET tous les externes ont le préfixe `[x]`
 - **Bloquée interne** : au moins un `[TAG]` est `[ ]` ou `[~]`
-- **Bloquée externe** : au moins un prérequis entre guillemets (toujours bloquant jusqu'à suppression manuelle)
-- Pour lever un prérequis externe : supprimer l'entrée de la ligne `needs:` une fois résolu
+- **Bloquée externe** : au moins un prérequis entre guillemets sans préfixe `[x]`
 - Ne jamais ajouter `needs:` à une tâche déjà `[~]` ou `[x]`
 
 ## Ajouter un TODO

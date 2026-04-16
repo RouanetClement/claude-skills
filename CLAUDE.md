@@ -62,9 +62,11 @@ skill-name/
 | `dev` | `code-automation` | Dev, scripts, APIs, IaC, CI/CD |
 | `dev` | `git-workflow` | Branches, commits, PRs, reviews |
 | `content` | `analyse-documents` | PDF/report extraction, synthesis, comparison |
+| `content` | `analyse-reunion` | Meeting transcript analysis: summary, decisions, actions, communication dynamics |
 | `content` | `recherche-synthese` | Web research, benchmarking, competitive analysis |
 | `content` | `redaction` | Emails, reports, documentation |
-| `gestion` | `gestion-projet` | Notion/Slack workflows, task tracking |
+| `gestion` | `gestion-notion` | Notion operations via MCP: pages, databases, blocks, search |
+| `gestion` | `gestion-projet` | Slack workflows, project tracking, progress reports (Notion → gestion-notion) |
 | `gestion` | `gestion-todo` | TODO.md read, edit, triage, archive |
 
 ## Key Conventions

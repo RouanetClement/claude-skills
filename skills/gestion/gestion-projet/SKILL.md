@@ -1,11 +1,11 @@
 ---
 name: gestion-projet
 description: >
-  Agent pour toutes les tâches de gestion de projet via Notion, Slack et autres outils connectés :
-  créer / mettre à jour / rechercher des pages Notion, envoyer ou rédiger des messages Slack,
-  gérer des tâches, suivre l'avancement, préparer des comptes rendus, organiser des informations.
-  UTILISER pour toute demande impliquant Notion, Slack, des tâches, un suivi de projet,
-  une mise à jour d'équipe, ou la recherche d'informations dans les outils de l'organisation.
+  Utiliser quand l'utilisateur veut gérer un projet, suivre l'avancement, préparer un compte rendu,
+  analyser des risques, ou communiquer via Slack.
+  Triggers: suivi projet, avancement, compte rendu, rapport projet, Slack, mise à jour équipe,
+  analyse de risques, synthèse projet, project status, team update.
+  NE PAS utiliser pour les opérations Notion directes (pages, databases, blocs) → utiliser gestion-notion.
 ---
 
 # Gestion de Projet — Point d'entrée
@@ -14,8 +14,7 @@ description: >
 
 | Type de tâche | Modèle |
 |---|---|
-| CRUD Notion (créer, lire, mettre à jour une page/base) | `claude-haiku-4-5` |
-| Recherche dans Notion ou Slack | `claude-haiku-4-5` |
+| Recherche dans Slack | `claude-haiku-4-5` |
 | Rédaction de message Slack simple | `claude-haiku-4-5` |
 | Synthèse de l'avancement projet | `claude-haiku-4-5` |
 | Préparation de compte rendu ou rapport de projet | `claude-sonnet-4-6` |
@@ -27,7 +26,6 @@ description: >
 
 | Contexte | Fichier à lire |
 |---|---|
-| Actions sur Notion | `references/notion.md` |
 | Actions sur Slack | `references/slack.md` |
 
 ---

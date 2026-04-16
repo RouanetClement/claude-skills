@@ -31,6 +31,7 @@ description: >
 | Créer, décrire ou merger une PR/MR | `references/pull-requests.md` |
 | Organiser ou traiter une revue de code | `references/code-review-workflow.md` |
 | Travailler sur plusieurs branches en parallèle (worktrees) | `references/worktree.md` |
+| Décider comment publier des branches de worktrees, gérer dépendances ou conflits entre branches | `references/worktree-strategy.md` |
 
 > Charger uniquement la référence pertinente au contexte de la demande.
 

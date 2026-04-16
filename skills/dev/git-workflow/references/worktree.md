@@ -118,3 +118,9 @@ qu'elles seront alignées avec la branche principale au moment du merge.
 Le skill `superpowers:using-git-worktrees` gère la création automatisée des worktrees dans
 `.claude/worktrees/` — il n'est **pas** destiné à l'usage humain direct. Ne pas le confondre
 avec ce protocole de worktrees manuels.
+
+## Décisions stratégiques
+
+Pour les décisions de publication (quand faire des PRs séparées vs. merger localement),
+la gestion des dépendances entre branches, et la résolution de conflits → charger
+`references/worktree-strategy.md`.

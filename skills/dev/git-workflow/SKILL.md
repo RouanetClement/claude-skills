@@ -16,6 +16,7 @@ description: >
 |---|---|
 | Nommer une branche, rédiger un message de commit, créer une description de PR | `claude-haiku-4-5` |
 | Décider comment découper une feature en branches ou PRs, stratégie de merge | `claude-sonnet-4-6` |
+| Organiser ou traiter une revue de code (préparer le contexte reviewer, traiter le feedback) | `claude-sonnet-4-6` |
 
 > En cas de doute → Haiku. Ces tâches sont mécaniques. Sonnet uniquement si une décision d'organisation est requise.
 
@@ -28,6 +29,8 @@ description: >
 | Créer ou nommer une branche | `references/branches.md` |
 | Rédiger ou valider un commit | `references/commits.md` |
 | Créer, décrire ou merger une PR/MR | `references/pull-requests.md` |
+| Organiser ou traiter une revue de code | `references/code-review-workflow.md` |
+| Travailler sur plusieurs branches en parallèle (worktrees) | `references/worktree.md` |
 
 > Charger uniquement la référence pertinente au contexte de la demande.
 

@@ -44,6 +44,18 @@ Audit public réalisé en amont. Architecture en 4 batches (dépendances respect
 - [x] Mettre à jour README.md : section Prérequis (Python, LaTeX, Node) + MCPs + tableau 24 skills
 - [x] Mettre à jour CLAUDE.md : table Current Skills complète (14 nouveaux skills)
 
+### [CONTENT] Copywriting, SEO, Medium et LinkedIn — 4 skills + MCP medium (PR #TBD)
+
+- [x] Créer skill `copywriting` : rédaction persuasive standalone (AIDA, PAS, BAB, FAB, analyse + anti-patterns) — [REDAC-COPY] superseded
+- [x] Créer skill `seo-content` : optimisation SEO éditoriale standalone (on-page, structure, featured snippets, schema markup) — [REDAC-SEO] superseded
+- [x] Créer skill `redaction-article` : pipeline complet articles Medium (format, publication MCP + fallback manuel) — orchestre `copywriting` et `seo-content`
+- [x] Créer skill `redaction-linkedin-post` : posts LinkedIn feed (format, hooks, algorithme, adaptation d'articles)
+- [x] Créer `mcps/medium.json` : MCP medium-mcp-server (Playwright-based, jackyckma/medium-mcp-server)
+- [x] Mettre à jour `mcps/README.md` : ajouter entrée MCP `medium`
+- [x] Mettre à jour `README.md` : 4 nouveaux skills dans le tableau + `medium-mcp-server` dans Prérequis + structure répertoires
+- [x] Mettre à jour `CLAUDE.md` : 4 nouveaux skills dans le tableau Current Skills
+- [x] Mettre à jour `TODO.md` : marquer [x] [REDAC-COPY] et [REDAC-SEO] (superseded par skills standalone)
+
 ---
 
 ## 2026-04-16 (2)

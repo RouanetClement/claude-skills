@@ -18,6 +18,7 @@ Redémarre Claude Code après installation pour activer les MCPs.
 | MCP | Commande | Utilisé par | Rôle |
 |---|---|---|---|
 | `playwright` | `npx @playwright/mcp@latest` | `extraction-linkedin` | Browser automation headless — extraction profil LinkedIn via URL |
+| `medium` | `npx medium-mcp-server` | `redaction-article` | Publication automatisée sur Medium via Playwright — fallback manuel disponible |
 
 ## Ajouter un nouveau MCP
 

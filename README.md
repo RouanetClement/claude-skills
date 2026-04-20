@@ -17,7 +17,11 @@ claude-skills-repo/
 │   │   ├── extraction-docx/    ← Extraction générique depuis DOCX/PPT (générique)
 │   │   ├── extraction-pdf/     ← Extraction générique depuis PDF (générique)
 │   │   ├── recherche-synthese/ ← Veille, recherche web, comparaisons
-│   │   └── redaction/          ← Emails, rapports, documentation
+│   │   ├── redaction/          ← Emails, rapports, documentation
+│   │   ├── copywriting/        ← Rédaction persuasive : AIDA, PAS, BAB, FAB
+│   │   ├── seo-content/        ← Optimisation SEO éditoriale : mots-clés, structure
+│   │   ├── redaction-article/  ← Articles Medium long-form + publication MCP/manuel
+│   │   └── redaction-linkedin-post/ ← Posts LinkedIn feed (≤3000 chars)
 │   ├── gestion/
 │   │   ├── gestion-notion/     ← Opérations Notion via MCP : pages, databases, blocs
 │   │   ├── gestion-projet/     ← Slack, suivi projet, comptes rendus (Notion → gestion-notion)
@@ -82,6 +86,10 @@ skill-name/
 | `content` | `extraction-docx` | Haiku | Extraction générique de données structurées depuis DOCX/PPT |
 | `content` | `recherche-synthese` | Haiku / Sonnet | Veille, recherche web, comparaisons |
 | `content` | `redaction` | Sonnet | Emails, rapports, documentation |
+| `content` | `copywriting` | Sonnet | Rédaction persuasive : AIDA, PAS, BAB, FAB, analyse et critique de textes |
+| `content` | `seo-content` | Sonnet | Optimisation SEO éditoriale : mots-clés, title tag, structure article, featured snippets |
+| `content` | `redaction-article` | Sonnet | Pipeline complet article Medium : rédaction long-form, SEO, publication MCP ou manuelle |
+| `content` | `redaction-linkedin-post` | Sonnet | Posts LinkedIn feed (≤3000 chars) : from scratch et adaptation d'articles |
 | `gestion` | `gestion-notion` | Haiku / Sonnet | Opérations Notion via MCP : pages, databases, blocs, recherche |
 | `gestion` | `gestion-projet` | Haiku / Sonnet / Opus | Slack, suivi projet, comptes rendus (Notion → gestion-notion) |
 | `gestion` | `gestion-todo` | Haiku / Sonnet | Lecture, édition, triage, archivage TODO.md |
@@ -126,7 +134,7 @@ skill-name/
 | `python-pptx` | `pip install python-pptx` | `generation-cv-ppt` |
 | `docx2pdf` | `pip install docx2pdf` | `generation-cv-pdf` (chemin DOCX→PDF) |
 | MiKTeX / TeX Live | dernière version | `generation-cv-latex`, `generation-cv-pdf` (chemin LaTeX) |
-| Node.js + npx | v18+ | `extraction-linkedin` (MCP Playwright, chemin URL uniquement) |
+| Node.js + npx | v18+ | `extraction-linkedin` (MCP Playwright, chemin URL uniquement), `redaction-article` (MCP medium-mcp-server) |
 | Claude Code CLI | dernière version | `scripts/install-mcps.sh` |
 | `jq` | v1.6+ | `scripts/install-mcps.sh` |
 

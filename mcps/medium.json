@@ -1,0 +1,11 @@
+{
+  "name": "medium",
+  "description": "Publication automatisée sur Medium via browser automation Playwright. Source: github.com/jackyckma/medium-mcp-server. Fallback manuel documenté dans skills/content/redaction-article/references/publication-medium.md",
+  "server": {
+    "command": "npx",
+    "args": ["medium-mcp-server"]
+  },
+  "usedBy": ["redaction-article"],
+  "requiredBy": "Publication Medium sans copier-coller manuel",
+  "fallback": "Instructions manuelles dans references/publication-medium.md"
+}

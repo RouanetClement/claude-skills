@@ -65,6 +65,10 @@ skill-name/
 | `content` | `analyse-reunion` | Meeting transcript analysis: summary, decisions, actions, communication dynamics |
 | `content` | `recherche-synthese` | Web research, benchmarking, competitive analysis |
 | `content` | `redaction` | Emails, reports, documentation |
+| `content` | `copywriting` | Persuasive writing: AIDA, PAS, BAB, FAB frameworks + text analysis |
+| `content` | `seo-content` | Editorial SEO optimization: keywords, title tag, article structure, featured snippets |
+| `content` | `redaction-article` | Medium long-form article pipeline: writing, SEO, MCP or manual publication |
+| `content` | `redaction-linkedin-post` | LinkedIn feed posts (≤3000 chars): from scratch and article adaptation |
 | `gestion` | `gestion-notion` | Notion operations via MCP: pages, databases, blocks, search |
 | `gestion` | `gestion-projet` | Slack workflows, project tracking, progress reports (Notion → gestion-notion) |
 | `gestion` | `gestion-todo` | TODO.md read, edit, triage, archive |

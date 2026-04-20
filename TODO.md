@@ -58,9 +58,9 @@ Une tâche est débloquée si elle n'a pas de `needs:` ou si tous les tags réf�
 
 ### [REDAC] redaction — améliorations
 
-- [ ] Ajouter `references/copywriting-persuasion.md` : frameworks AIDA, PAS, Before-After-Bridge — [REDAC-COPY] P2
+- [x] Ajouter `references/copywriting-persuasion.md` : frameworks AIDA, PAS, Before-After-Bridge — [REDAC-COPY] P2 (superseded — créé comme skill standalone `copywriting`, PR #TBD, 2026-04-20)
 - [ ] Ajouter `references/audit-contenu-ia.md` : détecter et réécrire patterns IA détectables — [REDAC-AUDIT] P3
-- [ ] Ajouter `references/seo-content.md` : intégration keywords, structure SEO, schema markup — [REDAC-SEO] P3
+- [x] Ajouter `references/seo-content.md` : intégration keywords, structure SEO, schema markup — [REDAC-SEO] P3 (superseded — créé comme skill standalone `seo-content`, PR #TBD, 2026-04-20)
 
 ### [ADOC] analyse-documents — améliorations
 

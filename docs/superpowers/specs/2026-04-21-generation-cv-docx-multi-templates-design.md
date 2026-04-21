@@ -15,8 +15,11 @@ Le skill `generation-cv-docx` existant génère un CV Word depuis un profil YAML
 ## Périmètre V1
 
 - **4 templates** : Classique Corporate, Moderne Bicolonne, Minimaliste ATS-Safe, WeValue (stub)
+- **Sélection multiple** : l'utilisateur peut demander 1 ou plusieurs templates en un seul run
+- **Collecte des infos une seule fois** : union des champs requis par tous les templates sélectionnés, posée en une seule passe
+- **Adaptation aux champs manquants** : un champ non fourni → le bloc est omis (pas de label vide)
+- **Parallélisation** : si plusieurs templates, chaque génération est déléguée à un sous-agent indépendant (skill `orchestration-agents`)
 - **Photo** : optionnelle, uniquement sur Moderne Bicolonne
-- **Infos complémentaires** : collectées pendant la génération, selon le template (champs manquants du profil YAML)
 - **PDF** : inchangé — `generation-cv-pdf` orchestre la conversion `.docx → PDF` via `docx2pdf`
 - **WeValue** : placeholder prêt à recevoir la charte graphique (couleurs, police, logo) lors d'une prochaine itération
 
@@ -48,49 +51,59 @@ skills/cv/generation-cv-docx/
 - `claude-haiku-4-5` par défaut (tâche mécanique : mapping YAML → python-docx)
 - `claude-sonnet-4-6` si le profil est incomplet et nécessite un jugement éditorial sur les champs manquants
 
-### Étape 1 — Sélection du template
+### Étape 1 — Sélection du ou des templates
 
-Si le template n'est pas précisé dans la demande, afficher le menu :
+Si les templates ne sont pas précisés dans la demande, afficher le menu (sélection multiple possible) :
 
 ```
-Quel template souhaitez-vous ?
+Quel(s) template(s) souhaitez-vous ? (vous pouvez en choisir plusieurs)
 - classique  : sobre, une colonne, serif, idéal corporate / conseil / finance
 - moderne    : bicolonne avec sidebar colorée, idéal tech / startup / créatif
 - minimaliste: noir & blanc, une colonne, 100 % lisible par les ATS
 - wevalue    : [en cours de développement — charte WeValue à venir]
 ```
 
-**Si WeValue est sélectionné** : informer l'utilisateur que ce template est en attente de la charte graphique, et lui demander de choisir un autre template en attendant.
+**Si WeValue est sélectionné** : informer l'utilisateur que ce template est en attente de la charte graphique, et lui demander de choisir un ou plusieurs autres templates en attendant.
 
 **Compagnon visuel** : si disponible dans la session, proposer de l'activer pour afficher les aperçus des templates avant que l'utilisateur ne choisisse.
 
 Charger après le choix :
 - `references/shared-patterns.md`
-- `references/template-<choix>.md`
+- `references/template-<choix>.md` pour chaque template sélectionné
 - `references/infos-complementaires.md`
 
-### Étape 2 — Collecte des infos complémentaires
+### Étape 2 — Collecte des infos complémentaires (une seule passe)
 
-1. Dans `infos-complementaires.md`, lire la section correspondant au template choisi
-2. Comparer les champs requis avec ce qui est présent dans le profil YAML
-3. Poser les questions pour les champs manquants (en bloc si ≤ 3, une par une si > 3)
-4. Si photo optionnelle (template `moderne`) : demander si l'utilisateur souhaite en inclure une, et si oui, le chemin absolu du fichier image (`.jpg`, `.png`)
+1. Dans `infos-complementaires.md`, lire les sections de **tous** les templates sélectionnés
+2. Calculer l'**union** des champs requis (dédupliqués)
+3. Comparer avec ce qui est présent dans le profil YAML
+4. Poser les questions pour les champs manquants **en une seule fois** (en bloc si ≤ 3, une par une si > 3)
+5. Si `moderne` est parmi les templates : demander si une photo doit être incluse, et si oui, le chemin absolu du fichier image (`.jpg`, `.png`)
+6. Un champ non fourni par l'utilisateur → valeur `None` → le bloc sera omis dans le script
 
-### Étape 3 — Génération du script Python
+### Étape 3 — Génération du ou des scripts Python
 
-- Sortie : script `generer_cv.py` complet entre triple backticks ` ```python `
+**Cas A — template unique :**
+- Générer directement `generer_cv_<template>.py` entre triple backticks ` ```python `
+
+**Cas B — templates multiples :**
+- Invoquer le skill `orchestration-agents` pour dispatcher un sous-agent par template en parallèle
+- Chaque sous-agent reçoit : le profil YAML complet + les infos complémentaires collectées + le template cible
+- Chaque sous-agent génère son `generer_cv_<template>.py` indépendamment
+- Une fois tous les scripts reçus, les afficher séquentiellement avec leurs instructions d'exécution respectives
+
+**Règles communes :**
 - Profil embarqué en dictionnaire Python (pas de lecture YAML externe)
-- Infos complémentaires collectées intégrées dans le dictionnaire
-- Blocs `if valeur:` pour chaque champ optionnel
-- Si photo : utiliser `python-docx` + `Pillow` (table 2 colonnes dans l'en-tête)
+- Blocs `if valeur:` pour **tout** champ optionnel — ne jamais afficher un label sans valeur
+- Si photo (template `moderne`) : utiliser `python-docx` + `Pillow` (table 2 colonnes dans l'en-tête)
 - Nom du fichier de sortie : `cv-<template>.docx`
 
 ### Étape 4 — Instructions d'exécution
 
 ```
 pip install python-docx          # toujours
-pip install Pillow               # uniquement si photo
-python generer_cv.py
+pip install Pillow               # uniquement si photo (template moderne)
+python generer_cv_<template>.py
 # Résultat : cv-<template>.docx dans le répertoire courant
 # Pour convertir en PDF → skill generation-cv-pdf
 ```
@@ -171,6 +184,4 @@ Photo : non (incompatible ATS)
 ## Hors périmètre V1
 
 - Template WeValue (stub uniquement — implémentation lors de la réception de la charte)
-- Compagnon visuel lors de la génération (proposition optionnelle au choix du template)
-- Génération multi-templates en un seul run
 - Thème sombre

@@ -30,6 +30,7 @@ Si les templates ne sont pas précisés dans la demande, afficher :
 
 **Si WeValue est sélectionné** : afficher le message de `template-wevalue.md`
 et demander de choisir parmi classique / moderne / minimaliste.
+Si WeValue est sélectionné **parmi d'autres templates** : retirer WeValue de la sélection, afficher le message d'indisponibilité, et continuer avec les templates restants.
 
 **Compagnon visuel** : si disponible dans la session, proposer de l'activer
 pour afficher les aperçus de templates avant le choix.
@@ -70,6 +71,7 @@ en parallèle. Chaque sous-agent reçoit :
 - Les infos complémentaires collectées (linkedin_url, site_web, github_url, chemin_photo)
 - Le template cible (une seule valeur par agent)
 - Instruction : générer `generer_cv_<template>.py` selon `template-<template>.md`
+- Le sous-agent invoque le skill `generation-cv-docx` en mode Cas A (template unique) — il reçoit un seul template et suit le routing normal depuis l'Étape 2
 
 Afficher les scripts générés séquentiellement avec leurs instructions d'exécution.
 
@@ -93,3 +95,11 @@ python generer_cv_<template>.py
 # Résultat : cv-<template>.docx dans le répertoire courant
 # Pour convertir en PDF → skill generation-cv-pdf
 ```
+
+---
+
+## Ajouter un nouveau template
+
+1. Créer `references/template-<nom>.md` en suivant la structure de `template-classique.md`
+2. Ajouter une section `## <nom>` dans `references/infos-complementaires.md` (champs requis + règle photo)
+3. Ajouter le template au menu de l'Étape 1 ci-dessus

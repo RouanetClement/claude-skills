@@ -55,9 +55,6 @@ set_cell_bg(gauche, '2d6a4f')
 ## Helpers sidebar (colonne gauche)
 
 ```python
-BLANC = RGBColor(0xFF, 0xFF, 0xFF)
-VERT = RGBColor(0x2D, 0x6A, 0x4F)
-
 def p_sidebar(cell, texte, bold=False, size=9):
     p = cell.add_paragraph()
     p.paragraph_format.space_after = Pt(2)

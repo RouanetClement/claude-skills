@@ -83,7 +83,7 @@ skill-name/
 | `cv` | `optimisation-linkedin` | Rewrite LinkedIn sections (orchestrates `redaction`) |
 | `cv` | `generation-cv-markdown` | Generate CV in Markdown (classic or job-targeted) |
 | `cv` | `generation-cv-latex` | Generate CV in LaTeX (AltaCV or moderncv) |
-| `cv` | `generation-cv-docx` | Generate CV DOCX via python-docx script |
+| `cv` | `generation-cv-docx` | Multi-templates DOCX (classique, moderne, minimaliste, wevalue-stub) ; collecte unifiée ; parallélisation sous-agents |
 | `cv` | `generation-cv-ppt` | Generate 1-pager profile PPT via python-pptx script |
 | `cv` | `generation-cv-pdf` | Generate CV PDF (via LaTeX or DOCX→PDF conversion) |
 

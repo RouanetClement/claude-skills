@@ -3,7 +3,7 @@
 Utilitaires communs chargés par tous les templates.
 Chaque fichier `template-<nom>.md` s'appuie sur ces helpers de base.
 
-# Patterns python-docx — Génération CV DOCX
+## Patterns python-docx — Génération CV DOCX
 
 ## Imports et initialisation
 

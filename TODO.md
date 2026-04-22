@@ -28,6 +28,7 @@ Une tâche est débloquée si elle n'a pas de `needs:` ou si tous les tags réf�
   needs: [ARCH-GLOBAL-HOOKS]
 - [ ] Vérifier si README, CLAUDE.md et TODO.md nécessitent une mise à jour lors de la finalisation d'une branche — marquer les tâches [x], archiver dans DONE.md si section complète — [ARCH-DOC-CHECK] P2
 - [x] Documenter la configuration MCP dans le repo : section dans CLAUDE.md ou `docs/mcp-setup.md` — lister les serveurs MCP requis, mode d'auth (OAuth/token), et quel skill les utilise — [ARCH-MCP-CONFIG] P2
+- [ ] Mettre en place un mécanisme de synchronisation des skills avec Cowork (explorer les plugins comme vecteur de distribution) — [ARCH-COWORK-SYNC] P2
 
 ---
 

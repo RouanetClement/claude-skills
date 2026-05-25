@@ -10,6 +10,10 @@
 #   SESSION_RECAP_THRESHOLD  — seuil de déclenchement (défaut: 5)
 #   SECONDBRAIN_PATH         — chemin du vault SecondBrain (requis pour le skill)
 #   _TEST_COUNTER_FILE       — override du fichier compteur (tests uniquement)
+#
+# Note : le compteur utilise PPID (PID du processus parent Claude) comme clé de session.
+#        Comportement best-effort : le compteur peut être remis à zéro si Claude relance
+#        le hook dans un nouveau sous-shell au cours de la même session.
 
 set -euo pipefail
 
@@ -37,6 +41,7 @@ if [ -f "$COUNTER_FILE" ]; then
 else
   COUNT=0
 fi
+[[ "$COUNT" =~ ^[0-9]+$ ]] || COUNT=0
 
 COUNT=$((COUNT + 1))
 echo "$COUNT" > "$COUNTER_FILE"
@@ -53,7 +58,7 @@ try {
 
 if [ -z "$TRANSCRIPT_PATH" ]; then
   TRANSCRIPT_PATH=$(find "$HOME/.claude/projects" -name "*.jsonl" 2>/dev/null \
-    | xargs ls -t 2>/dev/null | head -1 || true)
+    -exec ls -t {} + 2>/dev/null | head -1 || true)
 fi
 
 [ -z "$TRANSCRIPT_PATH" ] && exit 0

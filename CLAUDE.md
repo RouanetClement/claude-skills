@@ -89,13 +89,14 @@ skill-name/
 | `cv` | `audit-cv` | Évalue CV classique sur 6 dimensions, produit rapport `audit_cv` avec priorités |
 | `cv` | `optimisation-cv` | Améliore contenu CV (CAR, accroche, compétences) ; point d'entrée naturel pipeline classique |
 | `cv` | `ciblage-cv` | Adapte un CV optimisé pour une offre d'emploi ; produit YAML ciblé distinct |
+| `gestion` | `session-recap` | Bilan automatique de session → SecondBrain (hook Stop) |
 | `secondbrain` | `secondbrain-ingest` | Ingestion sources → wiki SecondBrain (fichier, URL, texte, binaire) |
 | `secondbrain` | `secondbrain-query` | Interrogation wiki SecondBrain avec citations chemin:ligne |
 | `secondbrain` | `secondbrain-lint` | Audit santé wiki SecondBrain (light auto / full manuel) |
 | `secondbrain` | `secondbrain-morning-briefing` | Briefing matinal WeValue adossé au vault SecondBrain |
 | `content` | `veille-techno` | Veille IA / DevOps / Secteur public FR → SecondBrain via secondbrain-ingest |
 
-> **Exception Progressive Disclosure** : les skills `secondbrain/` sont des prompts monolithiques (pas de router + references/). Acceptable car leur complexité nécessite une logique conditionnelle dense. Refactoring prévu : voir `[SECONDBRAIN-REFACTOR]` dans TODO.md.
+> **Exception Progressive Disclosure** : les skills `secondbrain/` et `session-recap` sont des prompts monolithiques (pas de router + references/). Acceptable car leur complexité nécessite une logique conditionnelle dense. Refactoring prévu pour secondbrain : voir `[SECONDBRAIN-REFACTOR]` dans TODO.md.
 
 ## Key Conventions
 

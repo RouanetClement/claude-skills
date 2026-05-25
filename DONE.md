@@ -7,6 +7,29 @@ Archives des tâches complétées. Format :
 
 ---
 
+## 2026-05-25
+
+### [SESSION-RECAP] Skill session-recap + hook Stop (branche feat/cv-generation-skills)
+
+- [x] Créer skill `session-recap` (monolithique) — bilan de session depuis transcript JSONL → SecondBrain
+- [x] Créer hook Stop `session-recap.sh` — compteur par PID, anti-boucle, injection systemMessage au seuil
+- [x] Étendre `sync-to-claude.sh` — support multi-events via `# CLAUDE_HOOK_EVENT:` header
+- [x] Mettre à jour `CLAUDE.md` — tableau Current Skills + note exception monolithique
+- [x] Synchroniser hook Stop vers `~/.claude/hooks/` + enregistrement dans `~/.claude/settings.json`
+
+---
+
+## 2026-04-22
+
+### [CV] Pipeline CV classique — 3 nouveaux skills (PR #TBD)
+
+- [x] Créer skill `audit-cv` — audit CV classique 6 dimensions, rapport `audit_cv` avec priorites[]
+- [x] Créer skill `optimisation-cv` — point d'entrée naturel, réécriture CAR, accroche, YAML enrichi
+- [x] Créer skill `ciblage-cv` — ciblage offre emploi, scoring pertinence, réordonnancement YAML ciblé
+- [x] Mettre à jour `CLAUDE.md` — tableau Current Skills
+
+---
+
 ## 2026-04-20
 
 ### [CV] Pipeline complet d'optimisation de profil LinkedIn — 14 skills (PR #TBD)

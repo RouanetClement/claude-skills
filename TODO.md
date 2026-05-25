@@ -28,6 +28,7 @@ Une tâche est débloquée si elle n'a pas de `needs:` ou si tous les tags réf�
   needs: [ARCH-GLOBAL-HOOKS]
 - [ ] Vérifier si README, CLAUDE.md et TODO.md nécessitent une mise à jour lors de la finalisation d'une branche — marquer les tâches [x], archiver dans DONE.md si section complète — [ARCH-DOC-CHECK] P2
 - [x] Documenter la configuration MCP dans le repo : section dans CLAUDE.md ou `docs/mcp-setup.md` — lister les serveurs MCP requis, mode d'auth (OAuth/token), et quel skill les utilise — [ARCH-MCP-CONFIG] P2
+- [ ] Mettre en place un mécanisme de synchronisation des skills avec Cowork (explorer les plugins comme vecteur de distribution) — [ARCH-COWORK-SYNC] P2
 
 ---
 
@@ -73,6 +74,13 @@ Une tâche est débloquée si elle n'a pas de `needs:` ou si tous les tags réf�
 - [x] Ajouter `references/worktree.md` : travail multi-branches en parallèle, convention anti-collision humain/agent — [GITWF-WORKTREE] P2 (PR #19, 2026-04-16)
 - [x] Ajouter `references/worktree-strategy.md` : stratégie de publication, schéma .worktree-config.md, règle PR cascadante, résolution de conflits — [GITWF-WORKTREE-STRAT] P2 (PR #19, 2026-04-16)
 - [ ] Ajouter `references/semver-changelog.md` : versioning sémantique, génération de CHANGELOG — [GITWF-SEMVER] P3
+
+### [SECONDBRAIN] SecondBrain skills
+
+- [ ] [SECONDBRAIN-REFACTOR] P3 — Réécrire les 4 skills secondbrain en routers Progressive Disclosure
+      (SKILL.md router + references/) conformément à l'architecture du repo.
+      Actuellement : prompts monolithiques (162–322 lignes). Décision assumée à la migration.
+      Skills concernés : secondbrain-ingest, secondbrain-query, secondbrain-lint, secondbrain-morning-briefing.
 
 ### [NEW] nouveaux skills à créer
 

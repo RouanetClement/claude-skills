@@ -18,12 +18,16 @@ Session recap threshold reached (N exchanges). Invoke the session-recap skill si
 
 1. Vérifier que `$SECONDBRAIN_PATH` est défini. Si absent : stopper silencieusement sans aucun message visible.
 2. Créer `$SECONDBRAIN_PATH/wiki/sessions/` si absent.
+3. Si le fichier JSONL n'existe pas ou est illisible via `Read` : stopper silencieusement.
 
 ## Routine
+
+> Mode silencieux actif : aucun texte dans le chat pendant toutes les étapes. Seule exception : erreur d'écriture au §6.
 
 ### 1. Lire le transcript JSONL
 
 Lire le fichier indiqué dans le systemMessage via l'outil `Read`.
+Pour les fichiers volumineux (> 2000 lignes), utiliser `Read` avec `offset` + `limit` par blocs de 2000 lignes jusqu'à la fin du fichier.
 
 Le JSONL contient des entrées JSON ligne par ligne. Types pertinents :
 
@@ -58,7 +62,7 @@ Liste chronologique des demandes utilisateur. Marquer `[x]` si un livrable est v
 Tableau : `| Skill/Outil | Nb usages | Contexte |`
 
 **D3 — Instructions, corrections & précisions utilisateur**
-Chaque message où l'utilisateur corrige une approche, précise une contrainte, ou valide explicitement. Citer fidèlement.
+Chaque message où l'utilisateur corrige une approche, précise une contrainte, ou valide explicitement. Citer fidèlement. Si aucune correction dans la session : noter `_(aucune)_`.
 
 **D4 — Contexte technique** *(uniquement si type_session = dev)*
 - **Technos** : imports, extensions de fichiers, noms de packages dans les commandes Bash
@@ -69,6 +73,7 @@ Patterns récurrents, préférences de workflow, style de communication détect�
 
 **D6 — Sous-agents**
 Pour chaque appel `Agent` tool : prompt envoyé, résultat, internals si JSONL secondaire accessible. Sinon : `[internals non disponibles]`.
+Si `sous_agents_invoques = 0` : omettre entièrement la section `## Sous-agents` du corps Markdown.
 
 **D7 — Suggestions**
 - Nouveaux skills candidats : demandes sans skill dédié

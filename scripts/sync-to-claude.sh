@@ -113,46 +113,65 @@ if [ "$SYNCED_HOOKS" -eq 0 ]; then
 else
   echo "$SYNCED_HOOKS hook(s) pousses."
 
-  # Fusionner les entrees PreToolUse dans ~/.claude/settings.json
+  # Fusionner les entrees dans ~/.claude/settings.json (event lu depuis commentaire CLAUDE_HOOK_EVENT)
   echo ""
   echo "Mise a jour de $SETTINGS_FILE ..."
-  node - "$SETTINGS_FILE" "$HOOKS_DEST" <<'NODE'
+  node - "$SETTINGS_FILE" "$HOOKS_DEST" "$HOOKS_ROOT" <<'NODE'
 const fs   = require('fs');
 const path = require('path');
 
 const settingsFile = process.argv[2];
-const hooksDir     = process.argv[3];
+const hooksDestDir = process.argv[3];
+const hooksSrcDir  = process.argv[4];
 
-// Lire les settings existants (creer si absent)
 let settings = {};
 if (fs.existsSync(settingsFile)) {
   try { settings = JSON.parse(fs.readFileSync(settingsFile, 'utf8')); }
   catch (e) { console.error('Erreur lecture settings.json :', e.message); process.exit(1); }
 }
 
-if (!settings.hooks)                settings.hooks = {};
-if (!settings.hooks.PreToolUse)     settings.hooks.PreToolUse = [];
+if (!settings.hooks) settings.hooks = {};
 
-// Pour chaque hook dans hooks/user/, ajouter une entree PreToolUse si absente
-const hookFiles = fs.readdirSync(hooksDir).filter(f => f.endsWith('.sh'));
+function readHookEvent(srcFile) {
+  try {
+    const content = fs.readFileSync(srcFile, 'utf8');
+    const match = content.match(/^#\s*CLAUDE_HOOK_EVENT:\s*(\w+)/m);
+    return match ? match[1] : 'PreToolUse';
+  } catch (e) { return 'PreToolUse'; }
+}
+
+function readHookMatcher(srcFile, event) {
+  try {
+    const content = fs.readFileSync(srcFile, 'utf8');
+    const match = content.match(/^#\s*CLAUDE_HOOK_MATCHER:\s*(.+)/m);
+    return match ? match[1].trim() : (event === 'Stop' ? '' : 'Bash');
+  } catch (e) { return event === 'Stop' ? '' : 'Bash'; }
+}
+
+const hookFiles = fs.readdirSync(hooksDestDir).filter(f => f.endsWith('.sh'));
 let added = 0;
-for (const hookFile of hookFiles) {
-  const hookPath = path.join(hooksDir, hookFile).replace(/\\/g, '/');
-  const cmd      = `bash "${hookPath}"`;
 
-  const alreadyRegistered = settings.hooks.PreToolUse.some(
+for (const hookFile of hookFiles) {
+  const destPath = path.join(hooksDestDir, hookFile).replace(/\\/g, '/');
+  const srcPath  = path.join(hooksSrcDir,  hookFile);
+  const cmd      = `bash "${destPath}"`;
+  const event    = readHookEvent(srcPath);
+  const matcher  = readHookMatcher(srcPath, event);
+
+  if (!settings.hooks[event]) settings.hooks[event] = [];
+
+  const alreadyRegistered = settings.hooks[event].some(
     entry => entry.hooks && entry.hooks.some(h => h.command === cmd)
   );
 
   if (!alreadyRegistered) {
-    settings.hooks.PreToolUse.push({
-      matcher: 'Bash',
-      hooks: [{ type: 'command', command: cmd }]
-    });
-    console.log('  + Hook enregistre : ' + hookFile);
+    const entry = { hooks: [{ type: 'command', command: cmd }] };
+    if (matcher) entry.matcher = matcher;
+    settings.hooks[event].push(entry);
+    console.log(`  + Hook enregistre [${event}] : ${hookFile}`);
     added++;
   } else {
-    console.log('  = Deja enregistre : ' + hookFile);
+    console.log(`  = Deja enregistre [${event}] : ${hookFile}`);
   }
 }
 

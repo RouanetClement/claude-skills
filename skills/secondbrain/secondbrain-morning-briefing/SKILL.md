@@ -1,6 +1,6 @@
 ---
 name: secondbrain-morning-briefing
-description: Briefing matinal personnalisé d'un Valuer WeValue, **adapté au vault SecondBrain** : remplace la mémoire YAML par le wiki Obsidian comme source ET destination du briefing. Lit les pages personnes/missions/orgs/clients pour enrichir le contexte (croisement contacts ↔ wiki), produit le briefing dans `wiki/<scope>/briefings/YYYY-MM-DD.md`, append au log, MAJ état dans `_state.md` et missions actives. Quatre sources Email/Slack/Notion/Calendrier (pro WeValue) + optionnellement Gmail/Calendar perso si branchés. Quatre modes : COMPLET / INCRÉMENTAL / RATTRAPAGE / RAFRAÎCHISSEMENT. Scoring adaptatif. Triggers : "briefing", "morning briefing", "briefing matinal", "quoi de neuf", "qu'est-ce que j'ai raté", "rattraper mes messages", "faire le point", "résumé matinal", "ma journée", "what did I miss", "daily briefing", "recap".
+description: Briefing matinal personnalisé d'un Valuer WeValue, **adapté au vault SecondBrain** : remplace la mémoire YAML par le wiki Obsidian comme source ET destination du briefing. Lit les pages personnes/missions/orgs/clients pour enrichir le contexte (croisement contacts ↔ wiki), produit le briefing dans `wiki/<scope>/briefings/YYYY/MM/YYYY-MM-DD.md`, append au log, MAJ état dans `_state.md` et missions actives. Quatre sources Email/Slack/Notion/Calendrier (pro WeValue) + optionnellement Gmail/Calendar perso si branchés. Quatre modes : COMPLET / INCRÉMENTAL / RATTRAPAGE / RAFRAÎCHISSEMENT. Scoring adaptatif. Triggers : "briefing", "morning briefing", "briefing matinal", "quoi de neuf", "qu'est-ce que j'ai raté", "rattraper mes messages", "faire le point", "résumé matinal", "ma journée", "what did I miss", "daily briefing", "recap".
 ---
 
 # secondbrain-morning-briefing
@@ -161,9 +161,16 @@ Pour chaque item scoré :
    - Document partagé sur une mission active → suggestion *« ajouter à sources: de la page mission »*.
    - Information factuelle sur une page existante → suggestion de MAJ ciblée.
 
+4. **Qualifier uniquement sur pièce** (règle anti-surinterprétation) :
+   - **Un rôle, un statut ou une conclusion** (« second décideur », « validé », « clôturable », « go »…) ne s'écrit que si le message le dit **explicitement**. Sinon, on décrit le fait brut (*« Approuvé par Mehdi »*) et on signale l'inférence comme hypothèse (*« à vérifier : … »*).
+   - **Un rattachement** à une mission, une piste ou un sujet en cours (« touche la piste X de ton repositionnement ») exige d'avoir **lu le fil ou la source** (`slack_read_thread`, carte AO, mail complet), et pas seulement l'aperçu de la recherche. Faute de lecture, on écrit *« lien à confirmer »* et on n'ajoute pas le wikilink.
+   - Un **AO** cité dans un fil est identifié (acheteur, référence, date limite) via la carte du bot ou l'avis, avant toute mise en relation avec un sujet.
+
 ---
 
-## Étape 4 — Produire le briefing dans `wiki/<scope>/briefings/YYYY-MM-DD.md`
+## Étape 4 — Produire le briefing dans `wiki/<scope>/briefings/YYYY/MM/YYYY-MM-DD.md`
+
+> **Arborescence (depuis le 17/06/2026)** : les briefings sont rangés en sous-dossiers **`AAAA/MM/`** (un dossier par année, puis par mois) — ex. `wiki/pro/briefings/2026/06/2026-06-17.md`. Le nom de fichier garde la **date complète** `YYYY-MM-DD.md`. Créer le dossier `YYYY/MM/` s'il n'existe pas. Seul `_state.md` reste à la racine de `briefings/`.
 
 ### 4.1 Frontmatter
 
@@ -239,7 +246,7 @@ Structure identique à la sortie du skill original :
    ```markdown
    ## YYYY-MM-DD — briefing: mode <mode>, <N> à traiter, <X> à suivre, <Y> à noter
 
-   Rapport : `wiki/pro/briefings/YYYY-MM-DD.md`
+   Rapport : `wiki/pro/briefings/YYYY/MM/YYYY-MM-DD.md`
    Missions touchées : [[<slug-1>]], [[<slug-2>]]
    ```
 
@@ -253,11 +260,20 @@ Structure identique à la sortie du skill original :
 
 3. **MAJ ciblées des pages mission active** :
    - Si un sujet identifié comme appartenant à une mission a un développement significatif (score ≥ 5, contenu actionnable) → ajouter une ligne sous une section `## Notes du <YYYY-MM-DD>` (créée si absente) de la page mission.
-   - Format de ligne : `- <date HH:MM> — [<source>] <résumé en 1 ligne> → [briefing](../briefings/YYYY-MM-DD.md)`.
+   - Format de ligne : `- <date HH:MM> — [<source>] <résumé en 1 ligne> → [briefing](../briefings/YYYY/MM/YYYY-MM-DD.md)`.
 
 ### 4.4 Briefing perso (si sources perso branchées)
 
-En parallèle, produire `wiki/perso/briefings/YYYY-MM-DD.md` avec les sources Gmail/Calendar perso. **Aucune fuite** : les contacts pro ne déclenchent pas d'items perso, et vice-versa.
+En parallèle, produire `wiki/perso/briefings/YYYY/MM/YYYY-MM-DD.md` avec les sources Gmail/Calendar perso. **Aucune fuite** : les contacts pro ne déclenchent pas d'items perso, et vice-versa.
+
+### 4.5 Versionner via une branche et une PR
+
+Un hook interdit le push direct sur `main` : tout passe par une branche `feature/*` et une PR.
+
+1. **Avant la première écriture** dans le vault (étape 4.1) : `git switch main && git pull --ff-only`, puis `git switch -c feature/briefing-YYYY-MM-DD`. Si la branche existe déjà (mode RAFRAÎCHISSEMENT ou suggestions appliquées dans la foulée), la réutiliser.
+2. **Committer** le briefing, `_state.md`, `log.md` et les éventuelles notes de mission sur cette branche (Conventional Commits, `feat(briefing): …`). Les suggestions appliquées ensuite (« applique N ») sont commitées **sur la même branche**.
+3. **Ne pas committer** les fichiers sans lien avec le briefing (ex. recaps de session non suivis) : les signaler.
+4. **En fin de restitution** (étape 5), proposer : *« Je pousse et j'ouvre la PR ? »*. Sur accord : `git push -u origin <branche>`, `gh pr create --base main`. Merge (`gh pr merge --merge --delete-branch`) puis `git switch main && git pull --ff-only` **uniquement sur demande explicite**.
 
 ---
 
@@ -288,7 +304,8 @@ Afficher dans la conversation :
 
 💪 [Phrase motivante]
 
-📄 Briefing complet : wiki/pro/briefings/YYYY-MM-DD.md
+📄 Briefing complet : wiki/pro/briefings/YYYY/MM/YYYY-MM-DD.md
+🌿 Commité sur feature/briefing-YYYY-MM-DD — je pousse et j'ouvre la PR ?
 ```
 
 L'utilisateur a un message court et lisible dans la conversation, et peut consulter le fichier détaillé dans Obsidian pour la version exhaustive.
@@ -300,7 +317,8 @@ L'utilisateur a un message court et lisible dans la conversation, et peut consul
 - **Confidentialité pro/perso** : aucune fuite entre les deux scopes. Briefings et `_state.md` strictement séparés.
 - **Sources brutes append-only** : si une source du jour (transcript, email lourd) doit être sauvegardée → passer par `/secondbrain-ingest` après le briefing.
 - **Sensibilité** : tous les briefings ont `sensitive: true`. Vault privé, pas de push hors local sans confirmation.
-- **Pas de fabrication** : si une info manque (contact non identifié, sujet flou), le briefing dit *« contact non identifié »* / *« sujet à clarifier »* — il ne hallucine pas un rôle ou une mission.
+- **Pas de fabrication** : si une info manque (contact non identifié, sujet flou), le briefing dit *« contact non identifié »* / *« sujet à clarifier »* — il ne hallucine pas un rôle ou une mission. Corollaire : pas de qualification ni de rattachement sans lecture de la source (cf. étape 3.4).
+- **Git** : jamais de commit sur `main` ; branche `feature/briefing-YYYY-MM-DD` + PR (cf. 4.5).
 - **Lecture seule du wiki par défaut** : le briefing ne modifie QUE `_state.md`, le briefing du jour, le log, et les sections `## Notes du <date>` des missions actives. Il ne touche pas aux pages concepts/personnes/orgs/clients existantes.
 - **Préserver le ton WeValue** : conversation, pas rapport. Tutoiement. Phrase motivante alignée mission (« révéler le potentiel », gouvernance partagée, consultant augmenté).
 

@@ -7,6 +7,14 @@ Archives des tâches complétées. Format :
 
 ---
 
+## 2026-10-23
+
+### [SECONDBRAIN] secondbrain-publish + report des MAJ du briefing (branche feat/secondbrain-publish)
+
+- [x] Créer skill `secondbrain-publish` (monolithique court) — branche feature/*, commit, push, PR, merge sur demande, état du dépôt, mode --all
+- [x] Reporter dans `secondbrain-morning-briefing` les MAJ faites côté vault : arborescence `AAAA/MM/` (juin), §3.4 qualifier uniquement sur pièce, §4.5 branche + PR
+- [x] Mettre à jour `CLAUDE.md` — tableau Current Skills
+
 ## 2026-05-25
 
 ### [SESSION-RECAP] Skill session-recap + hook Stop (branche feat/cv-generation-skills)

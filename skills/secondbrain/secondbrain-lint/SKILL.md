@@ -1,6 +1,6 @@
 ---
 name: secondbrain-lint
-description: Vérifie la santé du wiki SecondBrain. Mode light (pages passées en argument, déclenché auto par /secondbrain-ingest) ou full (vault complet, manuel). Détecte frontmatter incomplet (selon le type de page), wikilinks cassés, orphelins, doublons de slug, contradictions, pages mentionnées comme `related:` mais inexistantes, dates incohérentes. Schéma de validation par type (page wiki, source, index, lint-report). Produit un rapport horodaté dans wiki/_lint/. En mode full, propose des fix automatiques avec validation utilisateur. Triggers : "lint", "audit du wiki", "vérifie la cohérence du second brain".
+description: Vérifie la santé du wiki SecondBrain. Mode light (pages passées en argument, déclenché auto par /secondbrain-ingest) ou full (vault complet, manuel). Détecte frontmatter incomplet (selon le type de page), wikilinks cassés, orphelins, doublons de slug, contradictions, pages mentionnées comme `related:` mais inexistantes, dates incohérentes. Schéma de validation par type (page wiki, briefing, source, index, lint-report, état de briefing, recap de session). Produit un rapport horodaté dans wiki/_lint/. En mode full, propose des fix automatiques avec validation utilisateur. Triggers : "lint", "audit du wiki", "vérifie la cohérence du second brain".
 ---
 
 # secondbrain-lint
@@ -36,8 +36,10 @@ Pour chaque fichier, **router selon `type:`** dans le frontmatter et appliquer l
 
 | `type:` | Champs obligatoires | Champs optionnels typiques | Notes |
 |---|---|---|---|
-| **Pages wiki** : `concept`, `client`, `org`, `mission`, `domaine`, `personne`, `projet`, `lecture`, `veille` | `type`, `scope`, `status`, `created`, `updated` | `sensitive`, `tags`, `sources`, `related` | Schéma "page wiki standard" |
-| `source` (notes compagnons dans `sources/`) | `type`, `scope`, `source_kind`, `origin` (avec sous-clés `kind` + `ref`), `ingested` | `source_file`, `hash_sha256`, `created`, `updated`, `sensitive` | **Pas de `status` requis**. `created/updated` non obligatoires (équivalents à `ingested`). |
+| **Pages wiki** : `concept`, `client`, `org`, `mission`, `domaine`, `personne`, `projet`, `lecture`, `veille`, `briefing` | `type`, `scope`, `status`, `created`, `updated` | `sensitive`, `tags`, `sources`, `related` | Schéma "page wiki standard" |
+| `source` (tout `.md` de `sources/` : notes compagnons **et** sources texte) | `type`, `scope`, `source_kind`, `origin` (avec sous-clés `kind` + `ref`), `ingested` | `source_file`, `hash_sha256`, `doc_type`, `created`, `updated`, `sensitive` | **Pas de `status` requis**. `created/updated` non obligatoires (équivalents à `ingested`). `doc_type` garde la nature d'origine (`compte-rendu`, `synthese`…). |
+| `briefing-state` (`wiki/<scope>/briefings/_state.md`) | `type`, `scope`, `status`, `created`, `updated` | `utilisateur`, `curseurs`, `rappels`… | Exempté d'index |
+| recap de session (`wiki/sessions/*.md`, sans `type`) | `date`, `heure`, `projet`, `type_session`, `mode_invocation` | `skills_utilises`, `nb_echanges`… | Schéma du skill `session-recap` ; ni `scope` ni `type` exigés ; exempté d'index |
 | `index` (`wiki/index.md`) | `type`, `updated` | — | Pas de `scope` requis (transversal) |
 | `lint-report` (`wiki/_lint/*.md`) | `type`, `mode`, `created` | `scope_count` | Auto-générés |
 | pas de frontmatter (`wiki/log.md`) | H1 `# Log — SecondBrain` en début de fichier | — | Cas spécial |
@@ -50,7 +52,7 @@ Pour chaque fichier, **router selon `type:`** dans le frontmatter et appliquer l
 - `type` ∈ liste ci-dessus
 - `scope` ∈ {`pro`, `perso`}
 - `status` ∈ {`draft`, `active`, `archived`}
-- `source_kind` ∈ {`pdf`, `docx`, `pptx`, `xlsx`, `image`, `media`, `archive`, `msg`, `slack-channel-export`, `note`}
+- `source_kind` ∈ {`pdf`, `docx`, `pptx`, `xlsx`, `image`, `media`, `archive`, `msg`, `slack-channel-export`, `messages`, `notion`, `note`} — `messages` = extraits Slack/mail relevés à la main ; les graphies `slack`, `message`, `slack-thread` sont à normaliser en `messages`
 - `origin.kind` ∈ {`url`, `email`, `slack`, `manual`, `filesystem`}
 
 #### 2.b — Liens
@@ -62,15 +64,18 @@ Détection des wikilinks `[[slug]]` et chemins `sources:` :
   - commentaires HTML (`<!-- ... -->`)
   - blocs de code (entre triples backticks ou inline ` `` `)
 - **Vérifier** :
-  - Wikilinks `[[slug]]` ou `[[slug|alias]]` : la cible `<slug>.md` existe dans `wiki/` ou dans `sources/`
+  - Wikilinks `[[slug]]`, `[[slug|alias]]` ou `[[slug\|alias]]` (pipe échappé dans un tableau Markdown — **pas** un lien cassé) : la cible `<slug>.md` existe dans `wiki/` ou dans `sources/`. Un chemin relatif (`[[../../sources/…|alias]]`) se résout depuis le dossier de la page.
+  - `wiki/log.md` est append-only : un wikilink mort vers une page renommée depuis est **historique assumé** (info, pas erreur).
   - Entrées `related:` du frontmatter : chaque cible existe
   - Chemins `sources:` du frontmatter : chaque fichier existe sur le disque
 
 #### 2.c — Indexation
 
-- Les pages **wiki** (sauf `index.md`, `log.md`, `_lint/*`) doivent apparaître dans `wiki/index.md`.
+- Les pages **wiki** (sauf `index.md`, `log.md`, `_lint/*`, briefings et `_state.md`, `wiki/sessions/*`) doivent apparaître dans `wiki/index.md`. Les briefings sont catalogués par section, pas fichier par fichier.
 - Les notes compagnons de `sources/` sont **exemptées** de l'indexation (référencées via `sources:` des pages wiki, pas via `index.md`).
-- Le slug du fichier est **unique** dans tout `wiki/` (deux pages avec le même nom de fichier dans des sous-dossiers différents = warning).
+- Le slug du fichier est **unique** dans tout `wiki/` (deux pages avec le même nom de fichier dans des sous-dossiers différents = warning : `[[slug]]` devient ambigu). Fix : renommer la page la plus spécifique (ex. mission `lcl` → `refonte-app-virement-lcl`, le client garde `lcl`).
+- Sources : une source `.md` sans frontmatter `source` = **warning** (traçabilité), pas erreur. Fix proposé : frontmatter minimal ajouté **sans toucher au corps** (`origin.kind: manual`, `ref` explicite « non documenté », `ingested` = date du 1ᵉʳ commit) — métadonnées uniquement, compatible append-only.
+- Un `source_file` dont le binaire est absent en local = **suggestion** (binaire gitignored, souvent jamais téléchargé), pas warning.
 
 ### 3. Vérifications transversales (mode full uniquement)
 

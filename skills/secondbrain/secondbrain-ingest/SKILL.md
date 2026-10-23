@@ -102,7 +102,7 @@ Choix de la catégorie selon `type` :
 - `projet` → `wiki/perso/projets/`
 - `lecture` → `wiki/perso/lectures/`
 - `veille` → `wiki/pro/veille/YYYY-MM_<theme>.md`
-- `briefing` → `wiki/<scope>/briefings/YYYY-MM-DD.md` (en général produit par `secondbrain-morning-briefing`, pas par `ingest`)
+- `briefing` → `wiki/<scope>/briefings/YYYY/MM/YYYY-MM-DD.md` (en général produit par `secondbrain-morning-briefing`, pas par `ingest`)
 
 **Convention slug** : pas de préfixe redondant avec le dossier (`workshop-ia-lba.md` plutôt que `mission-workshop-ia-lba.md`).
 

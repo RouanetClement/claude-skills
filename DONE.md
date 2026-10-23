@@ -9,6 +9,11 @@ Archives des tâches complétées. Format :
 
 ## 2026-10-23
 
+### [SECONDBRAIN] Fix du lint full du 23/10 (branche feat/lint-schema-ingest-sync)
+
+- [x] Rapatrier `secondbrain-ingest` (copie vault du 19/06, chemins briefings `AAAA/MM/`)
+- [x] `secondbrain-lint` : schéma complété (`briefing`, `briefing-state`, recap de session, `source_kind` `messages`/`notion`, `doc_type`), `[[x\|alias]]` non cassé, log historique assumé, exemptions d'index, sources texte = warning, binaire absent = suggestion
+
 ### [SECONDBRAIN] Suggestions des recaps du 23/10 (branche feat/recap-suggestions-2026-10-23)
 
 - [x] Rapatrier `session-recap` router + `references/` (édité en juillet directement dans `~/.claude/skills`, jamais remonté)

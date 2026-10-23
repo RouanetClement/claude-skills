@@ -11,7 +11,7 @@ Publication des changements du vault SecondBrain sur `main`, **toujours via une 
 
 | Invocation | Effet |
 |---|---|
-| `publish` (défaut) | fichiers **suivis** modifiés → branche → commit → push → PR → *« je fusionne ? »* |
+| `publish` (défaut) | fichiers **suivis** modifiés + recaps `wiki/sessions/` non suivis → branche → commit → push → PR → *« je fusionne ? »* |
 | `publish --all` | idem + fichiers **non suivis**, listés et montrés avant `git add` |
 | `publish --merge` | idem + merge immédiat (l'utilisateur a dit « merge » dans la même demande) |
 | `publish --check` | aucun commit : seulement l'étape 5 (état du dépôt) |
@@ -40,7 +40,9 @@ gh auth status
 ## Étape 2 — Sélection et contrôle des fichiers
 
 1. **Suivis modifiés** : `git diff --name-only` + `git diff --cached --name-only`.
-2. **Non suivis** (`--all` uniquement) : `git ls-files --others --exclude-standard`. **Lister à l'utilisateur** avant de les ajouter (en mode `--merge`, la liste figure dans le compte rendu).
+2. **Non suivis** : `git ls-files --others --exclude-standard`.
+   - **Toujours inclus**, même sans `--all` : les recaps `wiki/sessions/*.md` (écrits non suivis par `session-recap` en mode auto).
+   - **Autres non suivis** : `--all` uniquement. **Lister à l'utilisateur** avant de les ajouter (en mode `--merge`, la liste figure dans le compte rendu). Sans `--all`, les signaler dans la restitution.
 3. **Contrôles bloquants** (règle des binaires de `CLAUDE.md`) :
    - aucun `.pdf/.docx/.pptx/.xlsx/.odt`, image bitmap, média ou archive ne doit être ajouté — s'il apparaît, c'est que le `.gitignore` est troué : stopper et signaler ;
    - tout binaire présent dans `sources/` doit avoir sa note compagnon `.md`.

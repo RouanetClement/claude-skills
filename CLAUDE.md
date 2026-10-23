@@ -97,7 +97,7 @@ skill-name/
 | `secondbrain` | `secondbrain-publish` | Publication du vault sur main via branche + PR (+ merge sur demande, état du dépôt) |
 | `content` | `veille-techno` | Veille IA / DevOps / Secteur public FR → SecondBrain via secondbrain-ingest |
 
-> **Exception Progressive Disclosure** : les skills `secondbrain/` et `session-recap` sont des prompts monolithiques (pas de router + references/). Acceptable car leur complexité nécessite une logique conditionnelle dense. Refactoring prévu pour secondbrain : voir `[SECONDBRAIN-REFACTOR]` dans TODO.md.
+> **Exception Progressive Disclosure** : les skills `secondbrain/` sont des prompts monolithiques (pas de router + references/). `session-recap` est passé en router + `references/` en juillet 2026. Acceptable car leur complexité nécessite une logique conditionnelle dense. Refactoring prévu pour secondbrain : voir `[SECONDBRAIN-REFACTOR]` dans TODO.md.
 
 ## Key Conventions
 

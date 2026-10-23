@@ -9,6 +9,14 @@ Archives des tâches complétées. Format :
 
 ## 2026-10-23
 
+### [SECONDBRAIN] Suggestions des recaps du 23/10 (branche feat/recap-suggestions-2026-10-23)
+
+- [x] Rapatrier `session-recap` router + `references/` (édité en juillet directement dans `~/.claude/skills`, jamais remonté)
+- [x] `session-recap` : §4 versionnement du bilan (auto = jamais de commit ; manuel = proposer `secondbrain-publish`)
+- [x] `secondbrain-publish` : recaps `wiki/sessions/` non suivis inclus par défaut
+- [x] `secondbrain-lint` : §3.e hygiène du dépôt Git (non suivis, PR ouvertes, branches orphelines, copies de skills divergentes)
+- [x] `skill-builder` : vérification des 3 copies d'un skill avant modification
+
 ### [SECONDBRAIN] secondbrain-publish + report des MAJ du briefing (branche feat/secondbrain-publish)
 
 - [x] Créer skill `secondbrain-publish` (monolithique court) — branche feature/*, commit, push, PR, merge sur demande, état du dépôt, mode --all

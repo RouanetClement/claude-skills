@@ -91,6 +91,20 @@ Pages présentes dans `wiki/` mais référencées par aucune autre page ET pas d
 - Une page `type: client` ne doit pas être dupliquée en `type: org` (et vice-versa) avec le même slug → warning.
 - Pages `personne` avec `tags: [partenaire, ...]` ou `tags: [client, ...]` devraient avoir un `related:` vers l'`org`/`client` correspondant — sinon suggestion.
 
+#### 3.e — Hygiène du dépôt Git
+
+```bash
+git fetch -q --prune
+git status --porcelain                    # fichiers non suivis / modifiés
+gh pr list --state open                   # PR en souffrance
+git branch -r --no-merged origin/main     # branches distantes orphelines
+```
+
+- Fichier non suivi ou modifié non commité → **warning** (ex. recap de session oublié). Fix proposé : `secondbrain-publish` (ou `--all`).
+- PR ouverte depuis > 2 jours → **warning**.
+- Branche distante non fusionnée → **warning**, avec diagnostic : contenu déjà présent sur `main` (cherry-pick, PR rejouée) ou PR fermée volontairement (`gh pr list --state all --search "head:<b>"`). Fix proposé : suppression de la branche — **jamais sans validation**.
+- Copie projet `.claude/skills/<skill>/` différente de `~/.claude/skills/<skill>/` → **warning** : une des deux copies a été éditée hors du dépôt source `claude-skills` ; la prochaine synchro écrasera l'une ou l'autre.
+
 ### 4. Produire le rapport
 
 Écrire dans `wiki/_lint/YYYY-MM-DD-HHmm-{light|full}.md` :

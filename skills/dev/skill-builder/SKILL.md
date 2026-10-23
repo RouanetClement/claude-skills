@@ -18,6 +18,16 @@ Avant toute conception, appliquer la règle `## Adding or Modifying Skills > Ste
 Présenter les résultats de l'audit à l'utilisateur et obtenir sa validation avant de continuer.
 
 > Cette étape est **obligatoire**. Ne pas la sauter même pour un "skill simple".
+
+**Vérifier les copies du skill avant toute modification** (création comprise : aucune copie homonyme ne doit exister). Un skill peut exister en trois exemplaires :
+
+| Copie | Rôle |
+|---|---|
+| `claude-skills/skills/<cat>/<skill>/` | **source de vérité** — seule copie à éditer |
+| `~/.claude/skills/<skill>/` | copie chargée, écrasée par `scripts/sync-to-claude.sh` |
+| `<projet>/.claude/skills/<skill>/` | copie projet éventuelle (ex. vault SecondBrain) |
+
+`diff -rq` entre les copies. Si une copie hors source est **plus récente** (édition directe, cas observé sur `session-recap` et `secondbrain-morning-briefing` en 2026) → la rapatrier dans la source **avant** de modifier, sinon la prochaine synchro efface ce travail. Après merge, recopier la source vers les autres emplacements.
 > Red flag : "c'est juste un petit skill, pas besoin d'auditer."
 
 ---
